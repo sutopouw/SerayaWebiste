@@ -1,0 +1,23 @@
+CREATE TABLE events (
+    id SERIAL PRIMARY KEY,
+    event_date TIMESTAMPTZ NOT NULL,
+    created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE links (
+    id UUID PRIMARY KEY,
+    event_id INTEGER REFERENCES events(id),
+    expires_at TIMESTAMPTZ NOT NULL,
+    is_used BOOLEAN DEFAULT FALSE,
+    attempt_count INTEGER DEFAULT 0,
+    created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE winners (
+    id SERIAL PRIMARY KEY,
+    link_id UUID REFERENCES links(id),
+    winner_username VARCHAR(255) NOT NULL,
+    discord_id VARCHAR(255) NOT NULL,
+    role_reward VARCHAR(255) NOT NULL,
+    created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
+); 
