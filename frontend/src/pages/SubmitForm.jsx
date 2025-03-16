@@ -5,6 +5,8 @@ import { motion } from 'framer-motion';
 import toast from 'react-hot-toast';
 import axios from 'axios';
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+
 function SubmitForm() {
   const { linkId } = useParams();
   const navigate = useNavigate();
@@ -17,14 +19,14 @@ function SubmitForm() {
   const [timeLeft, setTimeLeft] = useState('');
   const [roleReward, setRoleReward] = useState('');
   const [countdown, setCountdown] = useState(null);
-  const [attemptCount, setAttemptCount] = useState(null); // State baru untuk attempt_count
+  const [attemptCount, setAttemptCount] = useState(null);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
 
     try {
-      const { data } = await axios.post(`http://localhost:3001/api/submit/${linkId}`, { username, discordId });
+      const { data } = await axios.post(`${API_URL}/api/submit/${linkId}`, { username, discordId });
       setMessage(data.message);
       setIsSuccess(true);
       setExpiresAt(data.expiresAt);

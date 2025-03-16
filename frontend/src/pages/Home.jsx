@@ -4,6 +4,8 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+
 function Home() {
   const [winnerCount, setWinnerCount] = useState(0);
   const [recentWinners, setRecentWinners] = useState([]);
@@ -20,7 +22,7 @@ function Home() {
   useEffect(() => {
     const fetchWinners = async () => {
       try {
-        const { data } = await axios.get('/api/public/winners');
+        const { data } = await axios.get(`${API_URL}/api/public/winners`);
         setWinnerCount(data.length);
         setRecentWinners(data.slice(0, 3));
       } catch (error) {
@@ -34,7 +36,7 @@ function Home() {
   useEffect(() => {
     const fetchStats = async () => {
       try {
-        const { data } = await axios.get('/api/public/stats');
+        const { data } = await axios.get(`${API_URL}/api/public/stats`);
         setStats(data);
       } catch (error) {
         console.error('Error fetching stats:', error);
@@ -93,7 +95,7 @@ function Home() {
 
     const fetchNextEvent = async () => {
       try {
-        const { data } = await axios.get('/api/public/next-event');
+        const { data } = await axios.get(`${API_URL}/api/public/next-event`);
         console.log('Next event data:', data);
 
         if (!data.event_date) {

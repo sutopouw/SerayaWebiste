@@ -5,6 +5,8 @@ import { motion } from 'framer-motion';
 import toast from 'react-hot-toast';
 import axios from 'axios';
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+
 function AdminPanel() {
   const [token, setToken] = useState(localStorage.getItem('adminToken') || '');
   const [username, setUsername] = useState('');
@@ -15,7 +17,7 @@ function AdminPanel() {
 
   const login = async () => {
     try {
-      const { data } = await axios.post('http://localhost:3001/api/admin/login', { username, password });
+      const { data } = await axios.post(`${API_URL}/api/admin/login`, { username, password });
       setToken(data.token);
       localStorage.setItem('adminToken', data.token);
       toast.success('Login berhasil!');
@@ -27,7 +29,7 @@ function AdminPanel() {
 
   const generateLink = async () => {
     try {
-      const { data } = await axios.post('http://localhost:3001/api/generate-link', {}, {
+      const { data } = await axios.post(`${API_URL}/api/generate-link`, {}, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setGeneratedLink(`${window.location.origin}/submit/${data.linkId}`);
@@ -40,7 +42,7 @@ function AdminPanel() {
   const fetchWinners = async (authToken = token) => {
     console.log('Fetching winners with token:', authToken);
     try {
-      const response = await axios.get('http://localhost:3001/api/winners', {
+      const response = await axios.get(`${API_URL}/api/winners`, {
         headers: { Authorization: `Bearer ${authToken}` }
       });
       setWinners(response.data);
@@ -61,7 +63,7 @@ function AdminPanel() {
       
       // Kirim waktu dalam UTC tanpa perlu konversi manual
       const { data } = await axios.post(
-        'http://localhost:3001/api/admin/add-event',
+        `${API_URL}/api/admin/add-event`,
         { eventDate: localDate.toISOString() },
         { headers: { Authorization: `Bearer ${token}` } }
       );
