@@ -11,10 +11,16 @@ const app = express();
 
 // CORS configuration
 app.use(cors({
-  origin: ['https://seraya.vercel.app', 'http://localhost:5173'],
-  methods: ['GET', 'POST'],
-  credentials: true
+  origin: '*', // Allow all origins temporarily for debugging
+  methods: ['GET', 'POST', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true,
+  preflightContinue: true,
+  optionsSuccessStatus: 204
 }));
+
+// Handle OPTIONS preflight requests
+app.options('*', cors());
 
 app.use(express.json());
 
